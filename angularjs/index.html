@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="bower_components/angular/angular.min.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+
+  <!-- <script src="bower_components/angularjs/1.6.9/angular-route.js"></script> -->
+</head>
+<body ng-app="myApp">
+
+<div class="jumbotron text-center">
+  <h3>My First Bootstrap Page</h3>
+  <p>Resize this responsive page to see the effect!</p> 
+</div>
+  
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <p><a href="#/!">Main</a></p>
+      <a href="#!red">Red</a>
+      <a href="#!green">Green</a>
+      <a href="#!blue">Blue</a>
+      <div ng-view></div>
+  </div>
+</div>
+<script>
+var app = angular.module("myApp", ["ngRoute"]);
+app.config(function($routeProvider) {
+    $routeProvider
+    .when("/", {
+        templateUrl : "views/main.html",
+        controller:"mainCtrl"
+    })
+    .when("/red", {
+        templateUrl : "views/red.html",
+        controller :"red"
+
+    })
+    .when("/green", {
+        templateUrl : "views/green.html"
+    })
+    .when("/blue", {
+        templateUrl : "views/blue.html"
+    });
+});
+app.controller('mainCtrl',function($scope,$http){
+  console.log("----mainCtrl html-----------");
+
+  $http.get("http://localhost:3000/hello")
+    .then(function(response) {
+        $scope.myWelcome = response.data;
+         console.log(response);
+    });
+});
+
+app.controller('red',function($scope,$http){
+  console.log("red controller Index");
+
+  $http.post("http://localhost:3000/hello",{})
+    .then(function(response) {
+      $scope.myWelcome = response.data;
+        console.log(response);
+    });
+
+  
+});
+</script>
+
+
+
+<div class="container">
+<h2>Angular js Simple application</h2>
+<table  class="table">
+  <tr>
+    <td><input type="checkbox" ng-model="enabledisablebutton">Disable Button</td>
+    <td><button ng-disabled="enabledisablebutton">Click me!</button></td>
+  </tr>
+    <tr>
+    <td><input type="checkbox" ng-model="gnshowhide">Show Button</td>
+    <td><button ng-show="gnshowhide">Click me!</button></td>
+  </tr>
+  <tr>
+    <td><p>Total click: {{ clickcounter }}</p></td>
+    <td><button ng-click="clickcounter=clickcounter+1">Click me!</button></td>
+  </tr>
+  <tr>
+    <td><p>Enter you name: <input type="text" ng-model="name"></p></td>
+    <td><p>Hello <span  ng-bind="name"></span>!</p></td>
+  </tr>
+</table>
+</div>
+</body>
+</html>
